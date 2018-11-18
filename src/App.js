@@ -14,6 +14,9 @@ class App extends Component {
     ) {
       errors.email = 'Invalid email address';
     }
+    if (!values.password) {
+      errors.password = "Required";
+    }
     return errors;
   }
   handleSubmit = (values, { setSubmitting }) => {

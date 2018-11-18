@@ -24,9 +24,18 @@ describe('App tests', () => {
       await page.click(emailInput);
       await page.click(passwordInput); // no blur, so click elsewhere instead
 
-      const expected_errormessage = await page.waitFor(email_errormessage);
+      const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
 
-      expect(expected_errormessage).not.toEqual('Required');
+      expect(expected_errormessage).toEqual('Required');
+    });
+
+    test('not providing a passsword causes a "required" error message', async () => {
+      await page.click(passwordInput);
+      await page.click(emailInput); // no blur, so click elsewhere instead
+
+      const expected_errormessage = await page.$eval(password_errormessage, el => el.innerText);
+
+      expect(expected_errormessage).toEqual('Required');
     });
 
     test('bad email address generates an error message', async () => {
@@ -34,9 +43,9 @@ describe('App tests', () => {
       await page.type(emailInput, "bademailaddress");
       await page.click(passwordInput); // no blur, so click elsewhere instead
 
-      const expected_errormessage = await page.waitFor(email_errormessage);
+      const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
 
-      expect(expected_errormessage).not.toEqual('Invalid email address');
+      expect(expected_errormessage).toEqual('Invalid email address');
     });
 
     test('proper email addresss will pass validation', async () => {
