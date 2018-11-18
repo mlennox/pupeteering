@@ -31,18 +31,18 @@ class App extends Component {
       >
         {({ isSubmitting }) => (
           <Form>
-            <label>
+            <label data-testid="email_label">
               Email
-              <Field type="email" name="email" placeholder="Please provide your email" />
+              <Field data-testid="email" type="email" name="email" placeholder="Please provide your email" />
               <ErrorMessage name="email" render={DisplayErrorMessage} />
             </label>
-            <label>
+            <label data-testid="password_label">
               Password
-              <Field type="password" name="password" />
+              <Field data-testid="password" type="password" name="password" />
               <ErrorMessage name="password" render={DisplayErrorMessage} />
             </label>
             <label>
-              <button type="submit" disabled={isSubmitting}>
+              <button data-testid="submit" type="submit" disabled={isSubmitting}>
                 Submit
               </button>
             </label>
