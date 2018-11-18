@@ -70,9 +70,11 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "jest-puppeteer": "^3.5.1"
+    "jest-puppeteer": "^3.5.1",
+    "puppeteer": "^1.10.0"
   },
   "jest": {
+    "preset": "jest-puppeteer",
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts"
