@@ -19,6 +19,16 @@ describe('App tests', () => {
     beforeAll(async () => {
       await page.goto('http://localhost:3000/')
     })
+
+    test('not adding an email address causes a "required" error message', async () => {
+      await page.click(emailInput);
+      await page.click(passwordInput); // no blur, so click elsewhere instead
+
+      const expected_errormessage = await page.waitFor(email_errormessage);
+
+      expect(expected_errormessage).not.toEqual('Required');
+    });
+
     test('bad email address generates an error message', async () => {
       await page.click(emailInput);
       await page.type(emailInput, "bademailaddress");
