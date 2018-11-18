@@ -24,10 +24,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "jest-puppeteer": "^3.5.1"
-  },
-  "jest": {
-    "preset": "jest-puppeteer"
-  }
+  "devDependencies": {}
 }
