@@ -20,6 +20,10 @@ describe('App tests', () => {
       await page.goto('http://localhost:3000/')
     })
 
+    afterAll(async () => {
+      browser.close();
+    })
+
     test('not adding an email address causes a "required" error message', async () => {
       await page.click(emailInput);
       await page.click(passwordInput); // no blur, so click elsewhere instead
