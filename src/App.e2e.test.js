@@ -14,16 +14,6 @@ beforeAll(async () => {
   }
 });
 
-// afterAll(async () => {
-//   try {
-//     if (browser) await browser.close();
-//     if (page) await page.close();
-//   }
-//   catch (e) {
-//     console.log('= = = = = = = AFTER ALL ERROR', e);
-//   }
-// })
-
 describe('App tests', () => {
 
   describe('validation', () => {
@@ -35,11 +25,11 @@ describe('App tests', () => {
 
     beforeAll(async () => {
       await page.goto('http://localhost:3000/')
-    })
+    });
 
     afterAll(async () => {
       browser.close();
-    })
+    });
 
     test('not adding an email address causes a "required" error message', async () => {
       await page.click(emailInput);
