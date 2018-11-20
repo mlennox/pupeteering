@@ -40,7 +40,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       
-      - run: ls -la /home/circleci/repo/node_modules/puppeteer/.local-chromium
+      - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
       # - run: yarn add puppeteer -D --force --verbose
     
       # start and test the app
