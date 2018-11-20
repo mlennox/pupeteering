@@ -2,9 +2,10 @@ import puppeteer from 'puppeteer';
 
 let page, browser = null;
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   browser = await puppeteer.launch({ headless: true });
   page = await browser.newPage();
+  done();
 })
 
 describe('App tests', () => {
@@ -24,13 +25,14 @@ describe('App tests', () => {
       browser.close();
     })
 
-    test('not adding an email address causes a "required" error message', async () => {
+    test('not adding an email address causes a "required" error message', async (done) => {
       await page.click(emailInput);
       await page.click(passwordInput); // no blur, so click elsewhere instead
 
       const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
 
       expect(expected_errormessage).toEqual('Required');
+      done();
     });
 
     test('not providing a passsword causes a "required" error message', async () => {
