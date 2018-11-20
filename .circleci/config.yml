@@ -25,6 +25,8 @@ jobs:
 
       - run: whereis chromium
 
+      - run: whereis chrome
+
       # Download and cache dependencies
       - restore_cache:
           keys:
