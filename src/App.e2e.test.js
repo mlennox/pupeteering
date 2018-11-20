@@ -4,7 +4,9 @@ let page, browser = null;
 
 beforeAll(async () => {
   try {
-    browser = await puppeteer.launch({ headless: true });
+    // /home/circleci/repo/node_modules/puppeteer/.local-chromium
+    // browser = await puppeteer.launch({ headless: true });
+    browser = await puppeteer.launch({ headless: true, executablePath: '/home/circleci/repo/node_modules/puppeteer/.local-chromium' });
   }
   catch (e) {
     console.log('= = = = = = = BEFORE ALL ERROR - BROWSER', e);

@@ -23,9 +23,7 @@ jobs:
     steps:
       - checkout
 
-      - run: whereis chromium
-
-      - run: whereis chrome
+      
 
       # Download and cache dependencies
       - restore_cache:
@@ -42,7 +40,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       
-      - run: yarn add puppeteer --force --verbose
+      - run: ls -la /home/circleci/repo/node_modules/puppeteer/.local-chromium
+      # - run: yarn add puppeteer -D --force --verbose
     
       # start and test the app
       - run: ./ci.sh
