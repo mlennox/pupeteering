@@ -9,23 +9,20 @@ beforeAll(async () => {
   }
   catch (e) {
     console.log('= = = = = = = BEFORE ALL ERROR', e);
-  }
-  finally {
     if (browser) await browser.close();
     if (page) await page.close();
   }
-
 });
 
-afterAll(async () => {
-  try {
-    await browser.close();
-    await page.close();
-  }
-  catch (e) {
-    console.log('= = = = = = = AFTER ALL ERROR', e);
-  }
-})
+// afterAll(async () => {
+//   try {
+//     if (browser) await browser.close();
+//     if (page) await page.close();
+//   }
+//   catch (e) {
+//     console.log('= = = = = = = AFTER ALL ERROR', e);
+//   }
+// })
 
 describe('App tests', () => {
 
