@@ -16,11 +16,14 @@ jobs:
       # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
+    environment:
+      CI: true
+
 
     steps:
       - checkout
 
-      Download and cache dependencies
+      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
