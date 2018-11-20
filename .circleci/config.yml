@@ -33,6 +33,8 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: apt install chromium-browser
     
       # start and test the app
       - run: ./ci.sh
