@@ -5,11 +5,17 @@ let page, browser = null;
 beforeAll(async () => {
   try {
     browser = await puppeteer.launch({ headless: true });
+  }
+  catch (e) {
+    console.log('= = = = = = = BEFORE ALL ERROR - BROWSER', e);
+    if (browser) await browser.close();
+  }
+
+  try {
     page = await browser.newPage();
   }
   catch (e) {
-    console.log('= = = = = = = BEFORE ALL ERROR', e);
-    if (browser) await browser.close();
+    console.log('= = = = = = = BEFORE ALL ERROR - PAGE', e);
     if (page) await page.close();
   }
 });
