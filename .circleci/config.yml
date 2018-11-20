@@ -40,6 +40,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      
+      - run: yarn add puppeteer --force --verbose
     
       # start and test the app
       - run: ./ci.sh
