@@ -42,8 +42,20 @@ describe('App tests', () => {
     // })
 
     test('not adding an email address causes a "required" error message', async () => {
-      const page = await browser.newPage();
-      await page.goto('http://localhost:3000/');
+      let page = null;
+      try {
+        page = await browser.newPage();
+      }
+      catch (e) {
+        console.log('= = = = = = =NEW PAGE', e);
+      }
+      try {
+        await page.goto('http://localhost:3000/');
+      }
+      catch (e) {
+        console.log('= = = = = = = GOTO', e);
+      }
+
       await page.click(emailInput);
       await page.click(passwordInput); // no blur, so click elsewhere instead
 
