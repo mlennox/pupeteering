@@ -8,8 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       # - image: circleci/node:7.10
-      # - image: circleci/node:10.13.0-browsers
-      - image: browserless/chrome
+      - image: circleci/node:10.13.0-browsers
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -28,14 +27,14 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm install
+      - run: yarn install
     
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # - run: sudo apt install chromium-browser
+      - run: sudo apt install libpangocairo-1.0-0 libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libgconf2-4 libasound2 libatk1.0-0 libgtk-3-0
     
       # start and test the app
       - run: ./ci.sh
