@@ -37,5 +37,7 @@ jobs:
       # start the app?
       - run: yarn start &
 
+      - run: sleep 5
+
       # run tests!
-      - run: yarn ci
+      - run: yarn citest
