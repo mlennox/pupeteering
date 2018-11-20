@@ -34,10 +34,5 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
     
-      # start the app?
-      - run: yarn start &
-
-      - run: sleep 5
-
-      # run tests!
-      - run: yarn citest
+      # start and test the app
+      - run: ./ci.sh
