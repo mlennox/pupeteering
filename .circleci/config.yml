@@ -21,7 +21,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn start
+      - run: yarn start &
       
       # - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
       # - run: yarn add puppeteer -D --force --verbose
