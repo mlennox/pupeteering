@@ -24,19 +24,19 @@ jobs:
       - run: 
           name: Start the server
           command: |
-            yarn start &
-      - run:
-          name: cURL check of server
-          command: |
-            curl http://localhost:3000/
-      - run: 
-          name: Test the app
-          command: |
-            yarn test --maxWorkers 2 || true
-      - run:
-          name: cURL check of server
-          command: |
-            curl http://localhost:3000/
+            yarn start & && yarn test --maxWorkers 2
+      # - run:
+      #     name: cURL check of server
+      #     command: |
+      #       curl http://localhost:3000/
+      # - run: 
+      #     name: Test the app
+      #     command: |
+      #       yarn test --maxWorkers 2 || true
+      # - run:
+      #     name: cURL check of server
+      #     command: |
+      #       curl http://localhost:3000/
       
       # - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
       # - run: yarn add puppeteer -D --force --verbose
