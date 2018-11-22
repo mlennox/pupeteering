@@ -54,5 +54,5 @@ workflows:
     jobs:
       - buildering
       - testering:
-        requires:
-          - buildering
+          requires:
+            - buildering
