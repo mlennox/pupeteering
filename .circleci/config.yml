@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build_and_test:
+  build:
     docker:
       - image: circleci/node:10.13.0-browsers
     working_directory: ~/repo
