@@ -25,6 +25,10 @@ jobs:
           name: Start the server
           command: |
             yarn start &
+      - run:
+          name: cURL check of server
+          command: |
+            curl http://localhost:3000/
       - run: 
           name: Test the app
           command: |
