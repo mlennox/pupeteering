@@ -36,7 +36,16 @@ jobs:
     environment:
       CI: true
     steps:
-      # - checkout # might not be needed if workflow dir is shared
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test --maxWorkers 2 
 
 workflows:
@@ -44,4 +53,6 @@ workflows:
   build_and_test:
     jobs:
       - buildering
-      - testering
+      - testering:
+        requires:
+          - buildering
