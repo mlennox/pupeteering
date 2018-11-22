@@ -4,44 +4,44 @@
 #
 version: 2
 jobs:
-  build:
+  buildering:
     docker:
-      # specify the version you desire here
-      # - image: circleci/node:7.10
       - image: circleci/node:10.13.0-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
     environment:
       CI: true
-
-
     steps:
       - checkout
-
-      
-
       # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          # - v1-dependencies-
-
       - run: yarn install
-    
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
+      - run: yarn start
       
-      - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
+      # - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
       # - run: yarn add puppeteer -D --force --verbose
     
       # start and test the app
-      - run: ./ci.sh
+      # - run: ./ci.sh
+
+  testering:
+    docker:
+      - image: circleci/node:10.13.0-browsers
+    working_directory: ~/repo
+    environment:
+      CI: true
+    steps:
+      # - checkout # might not be needed if workflow dir is shared
+      - run: yarn test --maxWorkers 2 
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - buildering
+      - testering
