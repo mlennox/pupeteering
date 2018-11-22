@@ -26,6 +26,7 @@ jobs:
           command: |
             yarn start &
       - run: 
+          halt_build_on_fail: false
           name: Test the app
           command: |
             yarn test --maxWorkers 2 
