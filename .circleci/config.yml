@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  buildering:
+  build_and_test:
     docker:
       - image: circleci/node:10.13.0-browsers
     working_directory: ~/repo
@@ -21,7 +21,14 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn start &
+      - run: 
+          name: Start the server
+          command: |
+            yarn start &
+      - run: 
+          name: Test the app
+          command: |
+            yarn test --maxWorkers 2 
       
       # - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
       # - run: yarn add puppeteer -D --force --verbose
@@ -29,30 +36,3 @@ jobs:
       # start and test the app
       # - run: ./ci.sh
 
-  testering:
-    docker:
-      - image: circleci/node:10.13.0-browsers
-    working_directory: ~/repo
-    environment:
-      CI: true
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn test --maxWorkers 2 
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - buildering
-      - testering:
-          requires:
-            - buildering
