@@ -21,10 +21,13 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: 
-          name: Start the server
-          command: |
-            yarn start & && yarn test --maxWorkers 2
+      - run:
+          name: check server
+          command: ./ci.sh
+      # - run: 
+      #     name: Start the server
+      #     command: |
+      #       yarn start & && yarn test --maxWorkers 2
       # - run:
       #     name: cURL check of server
       #     command: |
