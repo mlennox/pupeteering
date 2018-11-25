@@ -49,5 +49,6 @@ if (
   argv.push(hasSourceControl ? '--watch' : '--watchAll');
 }
 
+argv.push('--verbose');
 
 jest.run(argv);
