@@ -1,33 +1,23 @@
 import puppeteer from 'puppeteer';
 
-
-
-
-
 describe('App tests', () => {
-
-  let browser = null;
-
-  beforeAll(async () => {
-    try {
-      // /home/circleci/repo/node_modules/puppeteer/.local-chromium
-      browser = await puppeteer.launch({ headless: true });
-      // browser = await puppeteer.launch({ headless: true, executablePath: '/home/circleci/repo/node_modules/puppeteer/.local-chromium' });
-    }
-    catch (e) {
-      console.log('= = = = = = = BEFORE ALL ERROR - BROWSER', e);
-      if (browser) await browser.close();
-    }
-  });
-
-  afterAll(async () => {
-    browser.close();
-  });
+  // beforeAll(async () => {
+  //   try {
+  //     // /home/circleci/repo/node_modules/puppeteer/.local-chromium
+  //     browser = await puppeteer.launch({ headless: true });
+  //     // browser = await puppeteer.launch({ headless: true, executablePath: '/home/circleci/repo/node_modules/puppeteer/.local-chromium' });
+  //   }
+  //   catch (e) {
+  //     console.log('= = = = = = = BEFORE ALL ERROR - BROWSER', e);
+  //     if (browser) await browser.close();
+  //   }
+  // });
 
 
   describe('validation', () => {
 
     let page = null;
+    let browser = null;
 
     const emailInput = '[data-testid="email"]';
     const email_errormessage = '[data-testid="email_label"] .error';
@@ -38,15 +28,17 @@ describe('App tests', () => {
     //   await page.goto('http://localhost:3000/')
     // });
 
-
-
-
     beforeEach(async () => {
+      browser = await puppeteer.launch({ headless: true }).then(() => { console.log('browser success') }).catch(() => { console.log('browser failed to run') });
       page = await browser.newPage().then(() => { console.log('newpage success') }).catch((e) => console.log("new page failed", e));
 
       await page.goto('http://localhost:3000/', { timeout: 20000 }).then(() => { console.log('page goto success') }).catch((e) => console.log("page goto failed", e));
 
-    })
+    });
+
+    afterEach(async () => {
+      browser.close();
+    });
 
     test('not adding an email address causes a "required" error message', async () => {
       await page.click(emailInput);
