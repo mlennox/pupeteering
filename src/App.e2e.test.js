@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const bigTimeout = 30000;
+const bigTimeout = 60000;
 jest.setTimeout(bigTimeout);
 
 describe('App tests', () => {
@@ -19,6 +19,9 @@ describe('App tests', () => {
     await page.goto('http://localhost:3000', { timeout: bigTimeout });
   });
 
+  afterAll(() => {
+    browser.close();
+  })
 
   describe('validation', () => {
 
