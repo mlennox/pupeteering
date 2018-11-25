@@ -19,8 +19,13 @@ describe('App tests', () => {
     catch (err) {
       console.log('browser launch failed', err);
     }
-    page = await browser.newPage();
-    await page.goto('http://localhost:3000', { timeout: bigTimeout });
+    page = await browser.newPage().then(page => {
+      console.log('new page success');
+      return page;
+    });
+    await page.goto('http://localhost:3000', { timeout: bigTimeout }).then(() => {
+      console.log('page goto success');
+    });
   });
 
   afterAll(() => {
