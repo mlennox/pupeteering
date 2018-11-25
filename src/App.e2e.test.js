@@ -42,20 +42,10 @@ describe('App tests', () => {
 
 
     beforeEach(async () => {
-      try {
-        page = await browser.newPage();
-      }
-      catch (e) {
-        console.log('= = = = = = = BEFORE EACH ERROR - PAGE', e);
-        if (page) await page.close();
-      }
-      try {
-        await page.goto('http://localhost:3000/');
-      }
-      catch (e) {
-        console.log('= = = = = = = BEFORE EACH ERROR - GOTO', e);
-        if (page) await page.close();
-      }
+      page = await browser.newPage().then(() => { console.log('newpage success') }).catch((e) => console.log("new page failed", e));
+
+      await page.goto('http://localhost:3000/', { timeout: 20000 }).then(() => { console.log('page goto success') }).catch((e) => console.log("page goto failed", e));
+
     })
 
     test('not adding an email address causes a "required" error message', async () => {
