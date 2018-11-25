@@ -1,44 +1,28 @@
 import puppeteer from 'puppeteer';
 
 describe('App tests', () => {
-  // beforeAll(async () => {
-  //   try {
-  //     // /home/circleci/repo/node_modules/puppeteer/.local-chromium
-  //     browser = await puppeteer.launch({ headless: true });
-  //     // browser = await puppeteer.launch({ headless: true, executablePath: '/home/circleci/repo/node_modules/puppeteer/.local-chromium' });
-  //   }
-  //   catch (e) {
-  //     console.log('= = = = = = = BEFORE ALL ERROR - BROWSER', e);
-  //     if (browser) await browser.close();
-  //   }
-  // });
+
+  let page = null;
+  let browser = null;
+
+  beforeAll(async () => {
+    try {
+      browser = await puppeteer.launch();
+    }
+    catch (err) {
+      console.log('browser launch failed', err);
+    }
+    page = await browser.newPage();
+    await page.goto('http://localhost:3000', { timeout: 10000 });
+  });
 
 
   describe('validation', () => {
-
-    let page = null;
-    let browser = null;
 
     const emailInput = '[data-testid="email"]';
     const email_errormessage = '[data-testid="email_label"] .error';
     const passwordInput = '[data-testid="password"]';
     const password_errormessage = '[data-testid="password_label"] .error';
-
-    // beforeAll(async () => {
-    //   await page.goto('http://localhost:3000/')
-    // });
-
-    beforeEach(async () => {
-      browser = await puppeteer.launch({ headless: true }).then(() => { console.log('browser success') }).catch(() => { console.log('browser failed to run') });
-      page = await browser.newPage().then(() => { console.log('newpage success') }).catch((e) => console.log("new page failed", e));
-
-      await page.goto('http://localhost:3000/', { timeout: 20000 }).then(() => { console.log('page goto success') }).catch((e) => console.log("page goto failed", e));
-
-    });
-
-    afterEach(async () => {
-      browser.close();
-    });
 
     test('not adding an email address causes a "required" error message', async () => {
       await page.click(emailInput);
