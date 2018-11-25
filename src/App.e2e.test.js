@@ -1,5 +1,8 @@
 import puppeteer from 'puppeteer';
 
+const bigTimeout = 30000;
+jest.setTimeout(bigTimeout);
+
 describe('App tests', () => {
 
   let page = null;
@@ -13,7 +16,7 @@ describe('App tests', () => {
       console.log('browser launch failed', err);
     }
     page = await browser.newPage();
-    await page.goto('http://localhost:3000', { timeout: 10000 });
+    await page.goto('http://localhost:3000', { timeout: bigTimeout });
   });
 
 
