@@ -10,7 +10,11 @@ describe('App tests', () => {
 
   beforeAll(async () => {
     try {
-      browser = await puppeteer.launch();
+      browser = await
+        puppeteer.launch().then(async browser => {
+          console.log('browser load success');
+          return browser;
+        }).catch(err => { console.log('browser load failed', err); throw new Error(err); });
     }
     catch (err) {
       console.log('browser launch failed', err);
