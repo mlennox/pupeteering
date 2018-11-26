@@ -10,6 +10,7 @@ jobs:
     working_directory: ~/repo
     environment:
       CI: true
+      CHROME_DEVEL_SANDBOX: /usr/local/sbin/chrome-devel-sandbox
     steps:
       - checkout
       # Download and cache dependencies
