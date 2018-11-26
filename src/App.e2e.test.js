@@ -11,8 +11,7 @@ describe('App tests', () => {
   beforeAll(async () => {
     try {
       browser = await
-        // puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }).then(async browser => {
-        puppeteer.launch().then(async browser => {
+        puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }).then(async browser => {
           console.log('browser load success');
           return browser;
         }).catch(err => { console.log('browser load failed', err); throw new Error(err); });
