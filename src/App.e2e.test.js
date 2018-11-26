@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const bigTimeout = 60000;
+const bigTimeout = 5000;
 jest.setTimeout(bigTimeout);
 
 describe('App tests', () => {
@@ -11,7 +11,7 @@ describe('App tests', () => {
   beforeAll(async () => {
     try {
       browser = await
-        puppeteer.launch().then(async browser => {
+        puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }).then(async browser => {
           console.log('browser load success');
           return browser;
         }).catch(err => { console.log('browser load failed', err); throw new Error(err); });
