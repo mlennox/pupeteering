@@ -1,8 +1,5 @@
 import puppeteer from 'puppeteer';
 
-const bigTimeout = 5000;
-jest.setTimeout(bigTimeout);
-
 describe('App tests', () => {
 
   let page = null;

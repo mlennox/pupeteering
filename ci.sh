@@ -1,3 +1,7 @@
+# NOTE
+# this is an attempt to setup sandboxing for the Chromium instance in docker
+# I didn't get this working reliably so instead use the startup args in the test itself
+# -------------------
 # pushd .
 # # setup sandbox
 # chromium_dir=$(ls node_modules/puppeteer/.local-chromium/ | grep linux)
@@ -8,6 +12,7 @@
 # sudo cp chrome_sandbox /usr/local/sbin/chrome-devel-sandbox
 # # CHROME_DEVEL_SANDBOX env variable part of circleci config
 # popd
+# -------------------
 
 yarn start &
 
