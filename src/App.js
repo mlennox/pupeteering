@@ -13,7 +13,7 @@ class App extends Component {
   }
 
   render() {
-    return this.state.showForm ? <LoginForm /> : <button id="showLogin" onClick={() => { setTimeout(() => { this.setState({ showForm: true }) }, 200) }} >Show login form</button>;
+    return this.state.showForm ? <LoginForm /> : <button id="showLogin" onClick={() => { setTimeout(() => { this.setState({ showForm: true }) }, 400) }} >Show login form</button>;
   }
 }
 

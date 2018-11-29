@@ -34,9 +34,15 @@ describe('App tests', () => {
     const emailInput = '[data-testid="email"]';
     const passwordInput = '[data-testid="password"]';
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       // click the 'show login form button'
       await page.click('#showLogin');
+    });
+
+    afterEach(async () => {
+      await page.goto('http://localhost:3000').then(() => {
+        // console.log('page goto success');
+      });
     })
 
     describe('without expect-puppeteer', () => {
@@ -45,6 +51,7 @@ describe('App tests', () => {
       const password_errormessage = '[data-testid="password_label"] .error';
 
       test('not adding an email address causes a "required" error message', async () => {
+        await page.waitForSelector(emailInput);
         await page.click(emailInput);
         await page.click(passwordInput); // no blur, so click elsewhere instead
 
@@ -54,6 +61,7 @@ describe('App tests', () => {
       });
 
       test('not providing a passsword causes a "required" error message', async () => {
+        await page.waitForSelector(passwordInput);
         await page.click(passwordInput);
         await page.click(emailInput); // no blur, so click elsewhere instead
 
@@ -63,6 +71,7 @@ describe('App tests', () => {
       });
 
       test('bad email address generates an error message', async () => {
+        await page.waitForSelector(emailInput);
         await page.click(emailInput);
         await page.type(emailInput, "bademailaddress");
         await page.click(passwordInput); // no blur, so click elsewhere instead
@@ -73,6 +82,7 @@ describe('App tests', () => {
       });
 
       test('proper email addresss will pass validation', async () => {
+        await page.waitForSelector(emailInput);
         await page.click(emailInput);
         await page.type(emailInput, "good@email.com");
         await page.click(passwordInput); // no blur, so click elsewhere instead
