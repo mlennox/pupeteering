@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { errorMessages } from './formValidation'
 
 describe('App tests', () => {
 
@@ -33,6 +34,11 @@ describe('App tests', () => {
     const emailInput = '[data-testid="email"]';
     const passwordInput = '[data-testid="password"]';
 
+    beforeAll(async () => {
+      // click the 'show login form button'
+      await page.click('#showLogin');
+    })
+
     describe('without expect-puppeteer', () => {
 
       const email_errormessage = '[data-testid="email_label"] .error';
@@ -44,7 +50,7 @@ describe('App tests', () => {
 
         const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
 
-        expect(expected_errormessage).toEqual('Required');
+        expect(expected_errormessage).toEqual(errorMessages.email.required);
       });
 
       test('not providing a passsword causes a "required" error message', async () => {
@@ -53,7 +59,7 @@ describe('App tests', () => {
 
         const expected_errormessage = await page.$eval(password_errormessage, el => el.innerText);
 
-        expect(expected_errormessage).toEqual('Required');
+        expect(expected_errormessage).toEqual(errorMessages.password.required);
       });
 
       test('bad email address generates an error message', async () => {
@@ -63,7 +69,7 @@ describe('App tests', () => {
 
         const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
 
-        expect(expected_errormessage).toEqual('Invalid email address');
+        expect(expected_errormessage).toEqual(errorMessages.email.invalid);
       });
 
       test('proper email addresss will pass validation', async () => {
@@ -79,17 +85,17 @@ describe('App tests', () => {
 
     describe('with expect-puppeteer', () => {
       test('not adding an email address causes a "required" error message', async () => {
-        await page.click(emailInput);
-        await page.click(passwordInput); // no blur, so click elsewhere instead
+        await expect(page).toClick(emailInput);
+        await expect(page).toClick(passwordInput);
 
-        await expect(page).toMatch('Required');
+        await expect(page).toMatch(errorMessages.email.required);
       });
 
       test('not providing a passsword causes a "required" error message', async () => {
         await page.click(passwordInput);
         await page.click(emailInput); // no blur, so click elsewhere instead
 
-        await expect(page).toMatch('Required');
+        await expect(page).toMatch(errorMessages.password.required);
       });
 
       test('bad email address generates an error message', async () => {
@@ -97,7 +103,7 @@ describe('App tests', () => {
           email: 'badEmailAddress',
         });
 
-        await expect(page).toMatch('Invalid email address');
+        await expect(page).toMatch(errorMessages.email.invalid);
       });
 
       test('proper email addresss will pass validation', async () => {
@@ -105,7 +111,7 @@ describe('App tests', () => {
           email: 'good@email.com',
         });
 
-        await expect(page).not.toMatch('Invalid email address');
+        await expect(page).not.toMatch(errorMessages.email.invalid);
       });
     });
 
