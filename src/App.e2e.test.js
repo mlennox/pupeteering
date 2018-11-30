@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { errorMessages } from './formValidation'
+import { dialogChecker } from './dialogChecker'
 
 const sleep = (msSleep) => {
   return new Promise(resolve => setTimeout(resolve, msSleep));
@@ -9,22 +10,6 @@ describe('App tests', () => {
 
   let page = null;
   let browser = null;
-
-  const dialogChecker = (() => {
-    let latch = () => { };
-    return {
-      updateMessage: (message) => {
-        latch(message);
-      },
-      check: () => {
-        return new Promise((resolve, reject) => {
-          latch = message => {
-            resolve(message);
-          }
-        });
-      }
-    };
-  })();
 
   beforeAll(async () => {
     try {
@@ -45,11 +30,7 @@ describe('App tests', () => {
       console.log('page goto success');
     });
 
-    page.on('dialog', async dialog => {
-      const message = await JSON.parse(dialog.message());
-      await dialog.accept();
-      dialogChecker.updateMessage(message);
-    });
+
   });
 
   afterAll(() => {
@@ -65,8 +46,6 @@ describe('App tests', () => {
       password: 'openSesame'
     };
 
-
-
     beforeEach(async () => {
       // click the 'show login form button'
       await page.click('#showLogin');
@@ -77,6 +56,14 @@ describe('App tests', () => {
     })
 
     describe('without expect-puppeteer', () => {
+
+      beforeAll(async () => {
+        page.on('dialog', async dialog => {
+          const message = await JSON.parse(dialog.message());
+          await dialog.accept();
+          dialogChecker.updateMessage(message);
+        });
+      })
 
       const email_errormessage = '[data-testid="email_label"] .error';
       const password_errormessage = '[data-testid="password_label"] .error';
@@ -128,7 +115,6 @@ describe('App tests', () => {
 
         await page.click(submitButton);
         const message = await dialogChecker.check();
-        console.log('= = = = =', message)
         expect(message).toEqual(goodInputData);
       });
 
@@ -159,11 +145,22 @@ describe('App tests', () => {
         await expect(page).toMatch(errorMessages.email.invalid);
       });
 
-      test('proper email addresss will pass validation', async () => {
+      test('proper email address will pass validation', async () => {
         await expect(page).toFillForm('form', goodInputData);
 
         await expect(page).not.toMatch(errorMessages.email.invalid);
       });
+
+      test('submit will pop dialog', async () => {
+        await expect(page).toFillForm('form', goodInputData);
+
+        const dialog = await expect(page).toDisplayDialog(async () => {
+          await expect(page).toClick(submitButton);
+        });
+
+        await expect(JSON.parse(dialog.message())).toEqual(goodInputData)
+      });
+
     });
 
 
