@@ -71,7 +71,7 @@
   ],
   "devDependencies": {
     "expect-puppeteer": "^3.5.1",
-    "jest-puppeteer": "^3.5.1",
+    "jest-puppeteer": "^3.5.2",
     "puppeteer": "^1.10.0"
   },
   "jest": {
