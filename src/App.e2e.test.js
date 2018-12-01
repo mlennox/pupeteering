@@ -1,36 +1,10 @@
-import puppeteer from 'puppeteer';
 import { errorMessages } from './formValidation'
-import { dialogChecker } from './dialogChecker'
 
 describe('App tests', () => {
 
-  let page = null;
-  let browser = null;
-
   beforeAll(async () => {
-    try {
-      browser = await
-        puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'], headless: true }).then(async browser => {
-          console.log('browser load success');
-          return browser;
-        }).catch(err => { console.log('browser load failed', err); throw new Error(err); });
-    }
-    catch (err) {
-      console.log('browser launch failed', err);
-    }
-    page = await browser.newPage().then(page => {
-      console.log('new page success');
-      return page;
-    });
-    await page.goto('http://localhost:3000').then(() => {
-      console.log('page goto success');
-    });
-
+    await page.goto('http://localhost:3000');
   });
-
-  afterAll(() => {
-    browser.close();
-  })
 
   describe('validation', () => {
     const emailInput = '[data-testid="email"]';
