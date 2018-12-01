@@ -10,7 +10,6 @@ jobs:
     working_directory: ~/repo
     environment:
       CI: true
-      # CHROME_DEVEL_SANDBOX: /usr/local/sbin/chrome-devel-sandbox
     steps:
       - checkout
       # Download and cache dependencies
@@ -23,28 +22,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: check server
-          command: ./ci.sh
-      # - run: 
-      #     name: Start the server
-      #     command: |
-      #       yarn start & && yarn test --maxWorkers 2
-      # - run:
-      #     name: cURL check of server
-      #     command: |
-      #       curl http://localhost:3000/
-      # - run: 
-      #     name: Test the app
-      #     command: |
-      #       yarn test --maxWorkers 2 || true
-      # - run:
-      #     name: cURL check of server
-      #     command: |
-      #       curl http://localhost:3000/
+          name: run tests
+          command: yarn test --maxWorkers 2
       
-      # - run: ls -laR /home/circleci/repo/node_modules/puppeteer/.local-chromium
-      # - run: yarn add puppeteer -D --force --verbose
-    
-      # start and test the app
-      # - run: ./ci.sh
 
