@@ -10,6 +10,7 @@ jobs:
     working_directory: ~/repo
     environment:
       CI: true
+      JEST_PUPPETEER_CONFIG: jest-puppeteer.config.ci.js
     steps:
       - checkout
       # Download and cache dependencies
