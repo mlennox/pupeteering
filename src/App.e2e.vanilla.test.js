@@ -1,21 +1,13 @@
 import { errorMessages } from './formValidation'
 import { dialogChecker } from './dialogChecker'
 
+import loginFormPage from './loginFormPage';
+
 describe('App tests without expect-puppeteer', () => {
-
-  const emailInput = '[data-testid="email"]';
-  const passwordInput = '[data-testid="password"]';
-  const submitButton = '[data-testid="submit"]';
-  const email_errormessage = '[data-testid="email_label"] .error';
-  const password_errormessage = '[data-testid="password_label"] .error';
-
-  const goodInputData = {
-    email: 'good@me.com',
-    password: 'openSesame'
-  };
 
   beforeAll(async () => {
     await page.goto('http://localhost:3000');
+
     page.on('dialog', async dialog => {
       const message = await JSON.parse(dialog.message());
       await dialog.accept();
@@ -36,41 +28,42 @@ describe('App tests without expect-puppeteer', () => {
   describe('validation', () => {
 
     test('not adding an email address causes a "required" error message', async () => {
-      await page.waitForSelector(emailInput);
-      await page.click(emailInput);
-      await page.click(passwordInput); // no blur, so click elsewhere instead
+      await page.waitForSelector(loginFormPage.emailInput);
+      await page.click(loginFormPage.emailInput);
+      await page.click(loginFormPage.passwordInput); // no blur, so click elsewhere instead
 
-      const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
+      const expected_errormessage = await page.$eval(loginFormPage.email_errormessage, el => el.innerText);
 
       expect(expected_errormessage).toEqual(errorMessages.email.required);
     });
 
     test('not providing a passsword causes a "required" error message', async () => {
-      await page.waitForSelector(passwordInput);
-      await page.click(passwordInput);
-      await page.click(emailInput); // no blur, so click elsewhere instead
+      await page.waitForSelector(loginFormPage.passwordInput);
+      await page.click(loginFormPage.passwordInput);
+      await page.click(loginFormPage.emailInput); // no blur, so click elsewhere instead
 
-      const expected_errormessage = await page.$eval(password_errormessage, el => el.innerText);
+      const expected_errormessage = await page.$eval(loginFormPage.password_errormessage, el => el.innerText);
 
       expect(expected_errormessage).toEqual(errorMessages.password.required);
     });
 
     test('bad email address generates an error message', async () => {
-      await page.waitForSelector(emailInput);
-      await page.type(emailInput, "bademailaddress");
-      await page.click(passwordInput);
+      await page.waitForSelector(loginFormPage.emailInput);
+      await page.type(loginFormPage.emailInput, "bademailaddress");
+      await page.click(loginFormPage.passwordInput);
 
-      const expected_errormessage = await page.$eval(email_errormessage, el => el.innerText);
+      const expected_errormessage = await page.$eval(loginFormPage.email_errormessage, el => el.innerText);
 
       expect(expected_errormessage).toEqual(errorMessages.email.invalid);
     });
 
     test('proper email addresss will pass validation', async () => {
-      await page.waitForSelector(emailInput);
-      await page.type(emailInput, goodInputData.email);
-      await page.click(passwordInput);
+      await page.waitForSelector(loginFormPage.emailInput);
+      await page.type(loginFormPage.emailInput, loginFormPage.goodInputData.email);
+      await page.click(loginFormPage.passwordInput);
 
-      const expected_errormessage = await page.$(email_errormessage);
+      const expected_errormessage = await page.$(loginFormPage.email_errormessage);
+
 
       expect(expected_errormessage).toBeNull();
     });
@@ -80,13 +73,13 @@ describe('App tests without expect-puppeteer', () => {
 
   describe('interaction', () => {
     test('submit will pop dialog', async () => {
-      await page.waitForSelector(emailInput);
-      await page.type(emailInput, goodInputData.email);
-      await page.type(passwordInput, goodInputData.password);
+      await page.waitForSelector(loginFormPage.emailInput);
+      await page.type(loginFormPage.emailInput, loginFormPage.goodInputData.email);
+      await page.type(loginFormPage.passwordInput, loginFormPage.goodInputData.password);
 
-      await page.click(submitButton);
+      await page.click(loginFormPage.submitButton);
       const message = await dialogChecker.check();
-      expect(message).toEqual(goodInputData);
+      expect(message).toEqual(loginFormPage.goodInputData);
     });
   });
 })

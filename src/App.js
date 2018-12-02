@@ -12,8 +12,16 @@ class App extends Component {
     }, 400);
   }
 
+  renderButton = () => {
+    return <button
+      id="showLogin"
+      onClick={() => { setTimeout(() => { this.setState({ showForm: true }) }, 400) }} >
+      Show login form
+      </button>;
+  }
+
   render() {
-    return this.state.showForm ? <LoginForm /> : <button id="showLogin" onClick={() => { setTimeout(() => { this.setState({ showForm: true }) }, 400) }} >Show login form</button>;
+    return this.state.showForm ? <LoginForm /> : this.renderButton();
   }
 }
 
