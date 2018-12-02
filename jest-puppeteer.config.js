@@ -10,5 +10,6 @@ module.exports = {
     port: 3000,
     protocol: 'http',
     usedPortAction: 'ask',
+    launchTimeout: 50000,
   },
 }
