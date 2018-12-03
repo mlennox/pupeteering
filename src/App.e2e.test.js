@@ -6,8 +6,6 @@ describe.only('App tests with expect-puppeteer', () => {
   beforeAll(async () => {
     await page.goto('http://localhost:3000');
 
-    await page.setRequestInterception(true);
-
   });
 
   beforeEach(async () => {
@@ -26,20 +24,13 @@ describe.only('App tests with expect-puppeteer', () => {
       });
       await expect(page).toClick(loginFormPage.submitButton);
       await expect(page).toMatch(errorMessages.email.required);
-
-
-      // await expect(page).toClick(loginFormPage.emailInput);
-      // await expect(page).toClick(loginFormPage.passwordInput);
     });
 
     test('not providing a passsword causes a "required" error message', async () => {
-      // await expect(page).toClick(loginFormPage.passwordInput);
-      // await expect(page).toClick(loginFormPage.emailInput);
       await expect(page).toFillForm('form', {
-        email: loginFormPage.goodInputData.email,
         password: '',
       });
-
+      await expect(page).toClick(loginFormPage.submitButton);
       await expect(page).toMatch(errorMessages.password.required);
     });
 
@@ -74,6 +65,7 @@ describe.only('App tests with expect-puppeteer', () => {
 
   describe('submission', () => {
     beforeAll(async () => {
+      await page.setRequestInterception(true);
       await page.on('request', request => {
         request.respond({
           status: 200,
