@@ -1,6 +1,7 @@
 module.exports = {
   launch: {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // slowMo: 200,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   },
 }

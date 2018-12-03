@@ -1,10 +1,13 @@
 import { errorMessages } from './formValidation'
 import loginFormPage from './loginFormPage';
 
-describe('App tests with expect-puppeteer', () => {
+describe.only('App tests with expect-puppeteer', () => {
 
   beforeAll(async () => {
     await page.goto('http://localhost:3000');
+
+    await page.setRequestInterception(true);
+
   });
 
   beforeEach(async () => {
@@ -18,15 +21,24 @@ describe('App tests with expect-puppeteer', () => {
 
   describe('validation', () => {
     test('not adding an email address causes a "required" error message', async () => {
-      await expect(page).toClick(loginFormPage.emailInput);
-      await expect(page).toClick(loginFormPage.passwordInput);
-
+      await expect(page).toFillForm('form', {
+        email: '',
+      });
+      await expect(page).toClick(loginFormPage.submitButton);
       await expect(page).toMatch(errorMessages.email.required);
+
+
+      // await expect(page).toClick(loginFormPage.emailInput);
+      // await expect(page).toClick(loginFormPage.passwordInput);
     });
 
     test('not providing a passsword causes a "required" error message', async () => {
-      await expect(page).toClick(loginFormPage.passwordInput);
-      await expect(page).toClick(loginFormPage.emailInput);
+      // await expect(page).toClick(loginFormPage.passwordInput);
+      // await expect(page).toClick(loginFormPage.emailInput);
+      await expect(page).toFillForm('form', {
+        email: loginFormPage.goodInputData.email,
+        password: '',
+      });
 
       await expect(page).toMatch(errorMessages.password.required);
     });
@@ -57,6 +69,31 @@ describe('App tests with expect-puppeteer', () => {
 
       await expect(JSON.parse(dialog.message())).toEqual(loginFormPage.goodInputData)
       dialog.dismiss();
+    });
+  });
+
+  describe('submission', () => {
+    beforeAll(async () => {
+      await page.on('request', request => {
+        request.respond({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ loggedIn: true }),
+          useFinalURL: false
+        });
+      });
+    });
+
+    test('submitting form with correct details will succeed', async () => {
+      await expect(page).toFillForm('form', loginFormPage.goodInputData);
+
+      const dialog = await expect(page).toDisplayDialog(async () => {
+        await expect(page).toClick(loginFormPage.submitButton);
+      });
+
+      await dialog.accept();
+
+      await expect(page).toMatch('You logged in successfully');
     });
   });
 
