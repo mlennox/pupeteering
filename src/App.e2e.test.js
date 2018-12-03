@@ -63,20 +63,31 @@ describe.only('App tests with expect-puppeteer', () => {
     });
   });
 
-  describe('submission', () => {
+  describe('network', () => {
+
+    const setupRequest = async response => {
+      await page.on('request', request => {
+        request.respond(response);
+      });
+    }
+
     beforeAll(async () => {
       await page.setRequestInterception(true);
-      await page.on('request', request => {
-        request.respond({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({ loggedIn: true }),
-          useFinalURL: false
-        });
-      });
-    });
+    })
+
+    afterAll(async () => {
+      await page.setRequestInterception(false);
+    })
 
     test('submitting form with correct details will succeed', async () => {
+
+      setupRequest({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ loggedIn: true }),
+        useFinalURL: false
+      });
+
       await expect(page).toFillForm('form', loginFormPage.goodInputData);
 
       const dialog = await expect(page).toDisplayDialog(async () => {
@@ -87,6 +98,12 @@ describe.only('App tests with expect-puppeteer', () => {
 
       await expect(page).toMatch('You logged in successfully');
     });
+
+    // test('incorrect password', () => { });
+
+    // test('no account', () => { });
+
+    // test('network failure', () => { });
   });
 
 });
