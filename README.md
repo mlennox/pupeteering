@@ -1,5 +1,5 @@
 # pupeteering
-quick investigation of UI tests with Jest and Puppeteer
+quick investigation of UI tests with Jest and Puppeteer.
 
 This app was created with create-react-app
 
@@ -7,6 +7,23 @@ This app was created with create-react-app
 
 Install puppeteer using `jest-pupeteer`. Currently, you'll need to eject the app to allow this.
 
+# jest-puppeteer
+
+We use [jest-puppeteer](https://github.com/smooth-code/jest-puppeteer) to drive `puppeteer` from our `Jest` tests.
+
+We have two config files for `jest-puppeteer` because we need to run the files locally and on a CI server.
+
+## local config
+
+```javascript
+launch: {
+  headless: true,
+  // slowMo: 200,
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
+}
+```
+
+## CI config
 
 # CI status
 
