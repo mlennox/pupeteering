@@ -12,9 +12,8 @@ jobs:
       CI: true
       JEST_PUPPETEER_CONFIG: jest-puppeteer.config.ci.js
     steps:
-      - run:
-          name: check seccomp
-          command: grep CONFIG_SECCOMP= /boot/config-$(uname -r)
+      # enable unpriveleged namespace
+      - run: sudo sysctl -w kernel.unprivileged_userns_clone=1
       - checkout
       # Download and cache dependencies
       - restore_cache:
